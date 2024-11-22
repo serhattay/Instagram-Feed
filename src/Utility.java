@@ -47,6 +47,7 @@ public class Utility {
 
         String user1, user2, userId, postId, content;
         String viewer, viewed;
+        int num;
         switch (commandType) {
             case "create_user":
                 user1 = lineParts[1];
@@ -82,9 +83,24 @@ public class Utility {
                 userId = lineParts[1];
                 postId = lineParts[2];
                 return Utility.toggleLike(userId, postId);
+
+            case "generate_feed":
+                userId = lineParts[1];
+                num = Integer.parseInt(lineParts[2]);
+                return Utility.generateFeed(userId, num);
         }
 
         return null;
+    }
+
+    private static String generateFeed(String userId, int num) {
+        if (!Instagram.doesUserExist(userId)) {
+            return "Some error occurred in generate_feed.";
+        }
+
+        StringBuilder feed = new StringBuilder("Feed for ").append(userId).append("\n");
+
+
     }
 
     private static String toggleLike(String userId, String postId) {
@@ -134,7 +150,7 @@ public class Utility {
             return "Some error occurred in create_post.";
         }
 
-        Post newPost = new Post(postId);
+        Post newPost = new Post(postId, 0, userId);
         Instagram.addPost(newPost);
 
         User user = Instagram.getUserObject(userId);

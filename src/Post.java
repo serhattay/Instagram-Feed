@@ -2,19 +2,22 @@ public class Post implements Denominable {
     String id;
     int numberOfLikes;
 
+    String author;
+
     MyHashTable<StringWrapper> likedUsers;
 
     Post() {
-        this(null, 0);
+        this(null);
     }
 
     Post(String id) {
-        this(id, 0);
+        this(id, 0, null);
     }
-    Post(String id, int numberOfLikes) {
+    Post(String id, int numberOfLikes, String author) {
         this.id = id;
         this.numberOfLikes = numberOfLikes;
         likedUsers = new MyHashTable<>();
+        this.author = author;
     }
 
     @Override
