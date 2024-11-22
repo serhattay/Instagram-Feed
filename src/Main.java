@@ -1,7 +1,7 @@
 public class Main {
 
     public static void main(String[] args) {
-        String inputPath = "input/type1_large.txt";
+        String inputPath = "input/type2_small.txt";
         String outputPath = "my_outputs/output.txt";
 
         long startingTime = System.currentTimeMillis();

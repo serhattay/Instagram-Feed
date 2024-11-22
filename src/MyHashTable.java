@@ -5,7 +5,7 @@ public class MyHashTable<E extends Denominable> {
     // Keep your tableSize always prime
     private int size;
     private static final int DEFAULT_TABLE_SIZE = 101;
-    private MyLinkedList<E>[] hashArray;
+    protected MyLinkedList<E>[] hashArray;
 
     private static final double MAX_LOAD_FACTOR = 1;
 
@@ -63,15 +63,7 @@ public class MyHashTable<E extends Denominable> {
     }
 
     public boolean remove(E element) {
-        int hashValue = hash(element);
-        if (hashArray[hashValue] != null) {
-            if(hashArray[hashValue].remove(element)) {
-                size--;
-                return true;
-            }
-        }
-
-        return false;
+        return remove(element.getId()) != null;
     }
 
     public E remove(String id) {
@@ -88,12 +80,7 @@ public class MyHashTable<E extends Denominable> {
     }
 
     public boolean contains(E element) {
-        int hashValue = hash(element);
-        if (hashArray[hashValue] != null) {
-            return hashArray[hashValue].contains(element);
-        }
-
-        return false;
+        return contains(element.getId());
     }
 
     public boolean contains(String id) {

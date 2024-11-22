@@ -3,6 +3,7 @@ public class User implements Denominable {
     String id;
     MyHashTable<StringWrapper> following;
     MyHashTable<StringWrapper> posts;
+    MyHashTable<StringWrapper> seenPosts;
 
     User() {
         this(null);
@@ -12,6 +13,7 @@ public class User implements Denominable {
         this.id = id;
         following = new MyHashTable<>();
         posts = new MyHashTable<>();
+        seenPosts = new MyHashTable<>();
     }
 
 

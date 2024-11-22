@@ -3,7 +3,7 @@ import java.io.*;
 public class CompareFiles {
     public static void main(String[] args) {
         String file1Path = "my_outputs/output.txt";
-        String file2Path = "output/otype1_large.txt"; // Path to the second file
+        String file2Path = "output/otype2_small.txt"; // Path to the second file
 
         try {
             boolean areFilesIdentical = compareFiles(file1Path, file2Path);

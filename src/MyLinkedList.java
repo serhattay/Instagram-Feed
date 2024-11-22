@@ -1,7 +1,7 @@
 import java.util.Iterator;
 import java.util.LinkedList;
 
-class MyLinkedList<E extends Denominable> extends LinkedList<E> {
+public class MyLinkedList<E extends Denominable> extends LinkedList<E> {
     public boolean contains(String id) {
         for (E element : this) {
             if (element.getId().equals(id)) {
