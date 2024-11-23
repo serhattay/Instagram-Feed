@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -87,20 +88,64 @@ public class Utility {
             case "generate_feed":
                 userId = lineParts[1];
                 num = Integer.parseInt(lineParts[2]);
-                return Utility.generateFeed(userId, num);
+                if (!Instagram.doesUserExist(userId)) {
+                    return "Some error occurred in generate_feed.";
+                }
+
+                ArrayList<Post> feedArrayList = Utility.generateFeedArrayList(userId, num);
+                StringBuilder feedBuilder = startBuildingFeed(userId, feedArrayList);
+                if (!checkIfEnough(feedArrayList, num)) {
+                    feedBuilder.append("No more posts available for ").append(userId).append(".");
+                } else {
+                    feedBuilder.setLength(feedBuilder.length() - 1);
+                }
+
+                return feedBuilder.toString();
+
+            case "scroll_through_feed":
+                userId = lineParts[1];
+                num = Integer.parseInt(lineParts[2]);
+                int lengthOfLikes = lineParts.length - 3;
+
+                int[] isLikedArray = new int[lengthOfLikes];
+
+                for (int i = 0; i < lengthOfLikes; i++) {
+                    isLikedArray[i] = Integer.parseInt(lineParts[i + 3]);
+                }
+
+                return Instagram.scrollThroughFeed(userId, num, isLikedArray);
         }
 
         return null;
     }
 
-    private static String generateFeed(String userId, int num) {
-        if (!Instagram.doesUserExist(userId)) {
-            return "Some error occurred in generate_feed.";
+    private static StringBuilder startBuildingFeed(String userId, ArrayList<Post> feedArrayList) {
+        StringBuilder sb = new StringBuilder("Feed for ").append(userId).append(":\n");
+
+        for (Post post : feedArrayList) {
+            sb.append("Post ID: ").append(post.id).append(", Author: ")
+                    .append(post.author).append(", Likes: ").append(post.numberOfLikes).append("\n");
         }
 
-        StringBuilder feed = new StringBuilder("Feed for ").append(userId).append("\n");
+        return sb;
+    }
 
+    private static boolean checkIfEnough(ArrayList<Post> feedArrayList, int num) {
+        return feedArrayList.size() == num;
+    }
 
+    protected static ArrayList<Post> generateFeedArrayList(String userId, int num) {
+        MyMaxHeap<Post> postsToGenerateFeed = Instagram.getPostHeapForFeed(userId);
+        int counter = 0;
+        ArrayList<Post> feedArrayList = new ArrayList<>();
+        while (postsToGenerateFeed.currentSize > 0 && counter < num) {
+            feedArrayList.add(postsToGenerateFeed.extractMax());
+            counter++;
+        }
+
+        // Returns only the available posts, if the length of this array is smaller than wanted, then
+        // this means that there was not enough posts to satisfy num
+        return feedArrayList;
     }
 
     private static String toggleLike(String userId, String postId) {
@@ -201,6 +246,8 @@ public class Utility {
             return "Some error occurred in create_user.";
         }
     }
+
+
 
 
 }

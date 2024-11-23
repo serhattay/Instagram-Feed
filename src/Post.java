@@ -1,4 +1,4 @@
-public class Post implements Denominable {
+public class Post implements Denominable, Comparable<Post> {
     String id;
     int numberOfLikes;
 
@@ -23,6 +23,21 @@ public class Post implements Denominable {
     @Override
     public String getId() {
         return id;
+    }
+
+    @Override
+    public int compareTo(Post otherPost) {
+        if (otherPost == null) {
+            throw new NullPointerException("Post to compare is null");
+        }
+
+        if (this.numberOfLikes > otherPost.numberOfLikes) {
+            return 1;
+        } else if (this.numberOfLikes < otherPost.numberOfLikes) {
+            return -1;
+        } else {
+            return this.id.compareTo(otherPost.id);
+        }
     }
 
     public boolean like(String userId) {
