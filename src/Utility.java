@@ -114,9 +114,39 @@ public class Utility {
                 }
 
                 return Instagram.scrollThroughFeed(userId, num, isLikedArray);
+
+            case "sort_posts":
+                userId = lineParts[1];
+                return Utility.sortPosts(userId);
         }
 
         return null;
+    }
+
+    private static String sortPosts(String userId) {
+        if (!Instagram.doesUserExist(userId)) {
+            return "Some error occurred in sort_posts.";
+        }
+
+        MyMaxHeap<Post> sortedPosts = Instagram.getMaxHeapOfUserPosts(userId);
+
+        if (sortedPosts.currentSize <= 0) {
+            return "No posts from " + userId;
+        }
+
+        StringBuilder sb = new StringBuilder("Sorting ").append(userId).append("'s posts:\n");
+
+        Post nextPost;
+        while (sortedPosts.currentSize > 0) {
+            nextPost = sortedPosts.extractMax();
+            sb.append(nextPost.id).append(", Likes: ").append(nextPost.numberOfLikes).append("\n");
+
+            if (sortedPosts.currentSize == 0) {
+                sb.setLength(sb.length() - 1);
+            }
+        }
+
+        return sb.toString();
     }
 
     private static StringBuilder startBuildingFeed(String userId, ArrayList<Post> feedArrayList) {

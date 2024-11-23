@@ -97,4 +97,23 @@ public class Instagram {
 
         return sb.toString();
     }
+
+    public static MyMaxHeap<Post> getMaxHeapOfUserPosts(String userId) {
+        User user = Instagram.getUserObject(userId);
+
+        Post post;
+        MyMaxHeap<Post> postsHeap = new MyMaxHeap<>();
+        for (MyLinkedList<StringWrapper> postsLinkedList : user.posts.hashArray) {
+            if (postsLinkedList != null) {
+                for (StringWrapper postId : postsLinkedList) {
+
+                    post = allPosts.getObject(postId.toString());
+                    postsHeap.insert(post);
+
+                }
+            }
+        }
+
+        return postsHeap;
+    }
 }
