@@ -5,7 +5,6 @@ A database that holds all users and posts, unlike the other classes that holds t
 Instagram holds their objects because they need to be kept somewhere.
  */
 public class Instagram {
-    // The two HashTables below hold IDs only
     private static MyHashTable<User> allUsers = new MyHashTable<>();
     private static MyHashTable<Post> allPosts = new MyHashTable<>();
 
