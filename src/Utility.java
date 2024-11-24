@@ -146,7 +146,7 @@ public class Utility {
         MyMaxHeap<Post> sortedPosts = Instagram.getMaxHeapOfUserPosts(userId);
 
         if (sortedPosts.currentSize <= 0) {
-            return "No posts from " + userId;
+            return "No posts from " + userId + ".";
         }
 
         StringBuilder sb = new StringBuilder("Sorting ").append(userId).append("'s posts:\n");
