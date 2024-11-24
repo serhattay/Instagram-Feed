@@ -19,7 +19,6 @@ public class MyLinkedList<E extends Denominable> implements Iterable<E> {
         }
     }
 
-    // Works well, tested
     public boolean contains(String id) {
         for (E element : this) {
             if (element.getId().equals(id)) {
@@ -29,7 +28,8 @@ public class MyLinkedList<E extends Denominable> implements Iterable<E> {
         return false;
     }
 
-    // Works well, tested
+    // Removing an element by traversing the LL just one time using the iterator, iterator's delete method is used
+    // to prevent illegitimate removals
     public E remove(String id) {
         Iterator<E> linkedListIterator = this.iterator();
         E nextElement = linkedListIterator.next();
@@ -37,9 +37,8 @@ public class MyLinkedList<E extends Denominable> implements Iterable<E> {
             nextElement = linkedListIterator.next();
         }
 
+        // size-- is included in the iterator's remove method
         linkedListIterator.remove();
-
-        size--;
 
         return nextElement;
     }
@@ -66,6 +65,10 @@ public class MyLinkedList<E extends Denominable> implements Iterable<E> {
         return new LinkedListIterator();
     }
 
+    /*
+    Fundamental node class for the linked list which holds an element, and a link to the next node to hold the linked
+    structure
+     */
     private static class Node<E> {
         E element;
         Node<E> next;
@@ -83,10 +86,21 @@ public class MyLinkedList<E extends Denominable> implements Iterable<E> {
             this.next = next;
         }
     }
+
+    /*
+    Custom iterator class for the custom linked list to power the for each loop and allow removals while traversing
+    // using the .remove() method of the iterator
+     */
     private class LinkedListIterator implements Iterator<E> {
+        // Previous node of the last returned node
         private Node<E> prev;
-        private Node<E> current;
+
+        // Last returned node
         private Node<E> lastReturned;
+
+        // Node to return when .next() is called
+        private Node<E> current;
+
 
         LinkedListIterator() {
             prev = null;
@@ -104,9 +118,11 @@ public class MyLinkedList<E extends Denominable> implements Iterable<E> {
                 throw new NoSuchElementException("No element is left.");
             }
 
+            // Shift all nodes by one node to the right
             prev = lastReturned;
             lastReturned = current;
             current = current.next;
+
             return lastReturned.element;
         }
 
@@ -128,6 +144,7 @@ public class MyLinkedList<E extends Denominable> implements Iterable<E> {
             }
 
             lastReturned = null;
+            size--;
         }
     }
 }

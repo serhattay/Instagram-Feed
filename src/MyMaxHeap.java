@@ -2,6 +2,8 @@ public class MyMaxHeap<E extends Comparable<E>> {
     E[] heapArray;
     int currentSize;
     int capacity;
+
+    // This choice of default capacity is quite arbitrary, it is not necessary for capacity to be prime
     private static final int DEFAULT_CAPACITY = 17;
 
     @SuppressWarnings("unchecked")
@@ -28,7 +30,6 @@ public class MyMaxHeap<E extends Comparable<E>> {
         }
     }
 
-    // Check insert and percolateUp when you have time
     public void insert(E element) {
         checkArraySize();
 
@@ -56,6 +57,9 @@ public class MyMaxHeap<E extends Comparable<E>> {
         heapArray[hole] = element;
     }
 
+    /*
+    Returns the largest item in the heap but does not change the heap.
+     */
     public E getMax() {
         if (isEmpty()) {
             return null;
@@ -64,6 +68,10 @@ public class MyMaxHeap<E extends Comparable<E>> {
         return heapArray[1];
     }
 
+    /*
+    Returns and deletes the largest item in the heap and uses percolate down to keep the heap's order and structural
+    property.
+     */
     public E extractMax() {
         if (isEmpty()) {
             return null;
@@ -106,6 +114,7 @@ public class MyMaxHeap<E extends Comparable<E>> {
         heapArray[hole] = temp;
     }
 
+    // Creates heap from any array, it doesn't need be sorted
     public void buildHeap() {
         for (int i = currentSize / 2; i > 0; i--) {
             percolateDown(i);

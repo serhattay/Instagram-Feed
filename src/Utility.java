@@ -1,8 +1,14 @@
 import java.io.*;
 import java.util.ArrayList;
 
-
+/*
+This Utility class is used for functionality, the main purpose is to write static functions somewhere else than Main.
+ */
 public class Utility {
+
+    /*
+    This function checks whether the input file exists and also makes sure that its type is a file
+     */
     public static void checkDirectories(String inputPath) throws FileNotFoundException {
         File inputFile = new File(inputPath);
 
@@ -14,6 +20,9 @@ public class Utility {
         }
 
     }
+    /*
+    This function does I/O operations using BufferedReader and BufferedWriter
+     */
     public static void processInputOutput(String inputPath, String outputPath) {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(inputPath));
              BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(outputPath))) {
@@ -21,7 +30,9 @@ public class Utility {
             String line;
             String outputString;
 
+            // Reading and processing the input file line by line
             while ((line = bufferedReader.readLine()) != null) {
+                // If necessary Utility.processLine returns the output string of the operation done
                 outputString = Utility.processLine(line);
 
                 if (outputString != null) {
@@ -34,7 +45,12 @@ public class Utility {
         }
     }
 
+    /*
+    Perceives which command is read and calls the desired function to get the operation done.
+    Returns the output string for the line if needed.
+     */
     private static String processLine(String line) {
+        // Splits the read command into command and parameters
         String[] lineParts = line.split(" ");
         String commandType = lineParts[0];
 
@@ -84,11 +100,16 @@ public class Utility {
                     return "Some error occurred in generate_feed.";
                 }
 
+                // Holds feed posts in an array list for further operations
                 ArrayList<Post> feedArrayList = Utility.generateFeedArrayList(userId, num);
                 StringBuilder feedBuilder = startBuildingFeed(userId, feedArrayList);
+
+                // If there are not enough amount of posts to satisfy the number of posts wanted in the feed,
+                // an extra line is added to the output the insufficient number of posts
                 if (!checkIfEnough(feedArrayList, num)) {
                     feedBuilder.append("No more posts available for ").append(userId).append(".");
                 } else {
+                    // Deleting the extra new line
                     feedBuilder.setLength(feedBuilder.length() - 1);
                 }
 
@@ -97,8 +118,9 @@ public class Utility {
             case "scroll_through_feed":
                 userId = lineParts[1];
                 num = Integer.parseInt(lineParts[2]);
-                int lengthOfLikes = lineParts.length - 3;
 
+                // Creating the array of which posts are liked (1) and which are not (0)
+                int lengthOfLikes = lineParts.length - 3;
                 int[] isLikedArray = new int[lengthOfLikes];
 
                 for (int i = 0; i < lengthOfLikes; i++) {
@@ -112,6 +134,7 @@ public class Utility {
                 return Utility.sortPosts(userId);
         }
 
+        // If the commands are given correctly this statement is never reached
         return null;
     }
 
@@ -129,10 +152,17 @@ public class Utility {
         StringBuilder sb = new StringBuilder("Sorting ").append(userId).append("'s posts:\n");
 
         Post nextPost;
+
+        /* currentSize parameter is inherently decremented when an item is extracted from the heap,
+        and we want to get every element in the heap; therefore, we can basically check if the heap size
+        is greater than 0. The thing happening here is actually heap sort.
+        */
         while (sortedPosts.currentSize > 0) {
             nextPost = sortedPosts.extractMax();
             sb.append(nextPost.id).append(", Likes: ").append(nextPost.numberOfLikes).append("\n");
 
+            // If the element is the last one, delete the new line for the output string to be compatible with the rest
+            // of the program
             if (sortedPosts.currentSize == 0) {
                 sb.setLength(sb.length() - 1);
             }
@@ -144,6 +174,7 @@ public class Utility {
     private static StringBuilder startBuildingFeed(String userId, ArrayList<Post> feedArrayList) {
         StringBuilder sb = new StringBuilder("Feed for ").append(userId).append(":\n");
 
+        // Traverse the feed array to create the output string
         for (Post post : feedArrayList) {
             sb.append("Post ID: ").append(post.id).append(", Author: ")
                     .append(post.author).append(", Likes: ").append(post.numberOfLikes).append("\n");
@@ -153,13 +184,18 @@ public class Utility {
     }
 
     private static boolean checkIfEnough(ArrayList<Post> feedArrayList, int num) {
+        // If there are enough posts to satisfy the number of posts wanted in the feed
         return feedArrayList.size() == num;
     }
 
     protected static ArrayList<Post> generateFeedArrayList(String userId, int num) {
         MyMaxHeap<Post> postsToGenerateFeed = Instagram.getPostHeapForFeed(userId);
-        int counter = 0;
+
         ArrayList<Post> feedArrayList = new ArrayList<>();
+
+        // Counter holds the number of posts added to the feed array
+        int counter = 0;
+
         while (postsToGenerateFeed.currentSize > 0 && counter < num) {
             feedArrayList.add(postsToGenerateFeed.extractMax());
             counter++;
@@ -176,6 +212,8 @@ public class Utility {
         }
 
         Post postToLike = Instagram.getPostObject(postId);
+
+        // is true if the post is liked and false if the post is unliked
         boolean likedOrUnliked = postToLike.like(userId);
 
         User user = Instagram.getUserObject(userId);
@@ -268,8 +306,4 @@ public class Utility {
             return "Some error occurred in create_user.";
         }
     }
-
-
-
-
 }

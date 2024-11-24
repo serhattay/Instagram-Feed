@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 public class User implements Denominable {
     String id;
     MyHashTable<StringWrapper> following;
