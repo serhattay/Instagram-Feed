@@ -2,8 +2,8 @@ import java.io.*;
 
 public class CompareFiles {
     public static void main(String[] args) {
-        String file1Path = "my_outputs/output.txt";
-        String file2Path = "output/otype1_large.txt"; // Path to the second file
+        String file1Path = "output/output.txt"; // Path to the resulting output file
+        String file2Path = "output/otype4_large.txt"; // Path to the correct output file
 
         try {
             boolean areFilesIdentical = compareFiles(file1Path, file2Path);
