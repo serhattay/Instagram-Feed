@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 
 public class Utility {
-    public static void checkDirectories(String inputPath, String outputPath) throws FileNotFoundException {
+    public static void checkDirectories(String inputPath) throws FileNotFoundException {
         File inputFile = new File(inputPath);
 
         if (!inputFile.exists()) {
@@ -11,13 +11,6 @@ public class Utility {
         }
         if (!inputFile.isFile()) {
             throw new FileNotFoundException("This directory does not represent a file.");
-        }
-
-        File outputFile = new File(outputPath);
-        File outputDirectory = outputFile.getParentFile();
-
-        if (!outputDirectory.exists()) {
-            throw new FileNotFoundException("Output directory is not valid.");
         }
 
     }

@@ -1,12 +1,12 @@
 public class Main {
 
     public static void main(String[] args) {
-        String inputPath = "input/type1_large.txt";
-        String outputPath = "my_outputs/output.txt";
+        String inputPath = args[0];
+        String outputPath = args[1];
 
         long startingTime = System.currentTimeMillis();
         try {
-            Utility.checkDirectories(inputPath, outputPath);
+            Utility.checkDirectories(inputPath);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
