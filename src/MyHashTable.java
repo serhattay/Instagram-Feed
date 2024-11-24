@@ -1,5 +1,4 @@
 import java.util.Iterator;
-import java.util.LinkedList;
 
 public class MyHashTable<E extends Denominable> {
     // Keep your tableSize always prime

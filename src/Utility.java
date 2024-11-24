@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
+
 
 public class Utility {
     public static void checkDirectories(String inputPath, String outputPath) throws FileNotFoundException {
